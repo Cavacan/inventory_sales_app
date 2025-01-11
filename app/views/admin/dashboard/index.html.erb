@@ -72,8 +72,9 @@
       <% @orders.each do |order| %>
         <tr>
           <td><%= order.customer_name %></td>
-          <td><%= order.order_items.sum { |item| item.quantity * item.price } %>円</td>
+          <td><%= order.order_items.sum { |item| item.quantity.to_i * item.price.to_i } %>円</td>
           <td><%= order.created_at.strftime("%Y/%m/%d %H:%M") %></td>
+          <td><%= link_to "注文詳細", order_path(order) %></td>
         </tr>
       <% end %>
     </tbody>

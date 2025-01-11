@@ -1,26 +1,50 @@
 <h1>新規注文</h1>
 
-<%= form_with(model: @order, url: orders_path, method: :post, local: true) do |f| %>
-  <div>
-    <%= f.label :customer_name, "注文者名" %>
-    <%= f.text_field :customer_name, required: true %>
-  </div>
-
-  <h2>注文商品</h2>
-  <% @products.each do |product| %>
+<% if @products.present? %>
+  <%= form_with(model: @order, url: orders_path, method: :post, local: true) do |f| %>
     <div>
-      <%= f.fields_for :order_items, @order.order_items.build(product: product) do |item_form| %>
-        <%= item_form.label :quantity, product.name %>
-        <%= item_form.number_field :quantity, value: 0, min: 0, max: product.stock_quantity %>
-        在庫: <%= product.stock_quantity %> | 単価: <%= product.price %>
-        <%= item_form.hidden_field :product_id, value: product.id %>
-      <% end %>
+      <%= f.label :customer_name, "注文者名" %>
+      <%= f.text_field :customer_name, required: true %>
+    </div>
+
+    <h2>注文商品</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>商品名</th>
+          <th>単価</th>
+          <th>在庫数</th>
+          <th>注文数量</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @order.order_items.each_with_index do |order_item, index| %>
+          <% product = @products[index] %>
+          <%= f.fields_for :order_items, order_item do |item_form| %>
+            <tr>
+              <td><%= product.name %></td>
+              <td>
+                <%= product.price %>
+                <%= item_form.hidden_field :price, value: product.price %>
+              </td>
+              <td><%= product.stock_quantity %></td>
+              <td>
+                <%= item_form.number_field :quantity, value: 0, min: 0, max: product.stock_quantity %>
+                <%= item_form.hidden_field :product_id, value: product.id %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div>
+      <%= f.submit "注文を確定する" %>
     </div>
   <% end %>
-
-  <div>
-    <%= f.submit "注文を確定する" %>
-  </div>
+<% else %>
+  <h2>注文可能な商品がありません</h2>
 <% end %>
 <br>
 <nav>

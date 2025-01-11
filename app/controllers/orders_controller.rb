@@ -8,17 +8,17 @@ class OrdersController < ApplicationController
   def create
     @order = Order.new(order_params)
 
-    ActiveRecord::base.transavtion do
+    ActiveRecord::Base.transaction do
       if @order.save
         process_order_items
-        redirect_to order_path(@order), notice: '注文が完了しました。'
+        redirect_to products_path, notice: '注文が完了しました。'
       else
         raise ActiveRecord::Rollback, @order.errors.full_messages.to_sentence
       end
     rescue => e
       @products = Product.all
       flash[:alert] = '注文に失敗しました：#{e.message}'
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -26,11 +26,15 @@ class OrdersController < ApplicationController
   def history
     @orders = Order.all
   end
+  
+  def show
+    @order = Order.find(params[:id])
+  end
 
   private
 
   def order_params
-    params.require(:order).permit(:customer_name, order_items_attributes: [:product_id, :quantity])
+    params.require(:order).permit(:customer_name, order_items_attributes: [:product_id, :quantity, :price])
   end
 
   def process_order_items
@@ -42,9 +46,5 @@ class OrdersController < ApplicationController
         raise ActiveRecord::Rollback, "在庫不足： #{product.name}"
       end
     end
-  end
-
-  def show
-    @orders = Order.all
   end
 end

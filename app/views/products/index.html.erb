@@ -6,7 +6,6 @@
       <th>商品名</th>
       <th>価格</th>
       <th>在庫</th>
-      <th>操作</th>
     </tr>
   </thead>
   <tbody>
@@ -15,11 +14,15 @@
         <td><%= product.name %></td>
         <td><%= product.price %></td>
         <td><%= product.stock_quantity %></td>
-        <td><%= link_to '注文する', new_order_path %></td>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+      <% end %>
+    </tbody>
+  </table>
+
+<br>
+  <td><%= link_to '注文する', new_order_path %></td>
+<br>
+<br>
 
 <nav>
   <%= link_to 'トップページへ戻る', root_path %>

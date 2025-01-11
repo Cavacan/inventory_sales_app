@@ -15,7 +15,7 @@
         <tr>
           <td><%= order.customer_name %></td>
           <td><%= order.created_at.strftime("%Y/%m/%d %H:%M") %></td>
-          <td><%= order.order_items.sum { |item| item.quantity * item.price } %></td>
+          <td><%= order.order_items.sum { |item| item.quantity.to_i * item.price.to_i } %></td>
           <td><%= link_to "詳細を見る", order_path(order) %></td>
         </tr>
       <% end %>
@@ -24,6 +24,8 @@
 <% else %>
   <h2>まだ注文はありません。</h2>
 <% end %>
+
+<br>
 
 <nav>
   <%= link_to "トップページへ戻る", root_path %>
