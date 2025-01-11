@@ -1,5 +1,5 @@
 module Admin
-  class Admin::DashboardController < ApplicationController
+  class Admin::DashboardController < BaseController
     def index
       @products = Product.all
       @orders = Order.all

@@ -12,5 +12,16 @@
 
   <body>
     <%= yield %>
+    <br>
+    <br>
+    <hr>
+    <nav>
+      <% if logged_in? %>
+        <p>ログイン中: <%= current_user.email %></p>
+        <%= button_to 'ログアウト', admin_logout_path, method: :delete, form_class: "inline" %>
+      <% else %>
+        <%= link_to 'ログイン', admin_login_path %>
+      <% end %>
+    </nav>
   </body>
 </html>
