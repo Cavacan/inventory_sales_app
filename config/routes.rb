@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :orders, only: [:new, :create, :show]
   namespace :admin do
     get "dashboard" => "dashboard#index", as: "dashboard"
-    post "products" => "dashboard#create", as: "admin_dashboard_create"
-    delete "products/:id" => "dashboard#destroy", as: "admin_dashboard_destroy"
+    post "products" => "dashboard#create", as: "dashboard_create"
+    delete "products/:id" => "dashboard#destroy", as: "dashboard_destroy"
   end
 end

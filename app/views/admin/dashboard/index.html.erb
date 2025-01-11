@@ -2,9 +2,32 @@
 <hr>
 
 
-<h2>商品管理</h2>
-<% link_to '商品登録', "#" %>
+<h2>商品登録</h2>
+
+<%= form_with model: @product, url: admin_dashboard_create_path, local: true, scope: :product do |f| %>
+  <table>
+    <thead>
+      <tr>
+        <th><%= f.label :name, "商品名" %></th>
+        <th><%= f.label :price, "価格" %></th>
+        <th><%= f.label :stock_quantity, "在庫数" %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= f.text_field :name, value: '商品D', required: true %></td>
+        <td><%= f.number_field :price, step: 1, min: 0, value: 1000, required: true %></td>
+        <td><%= f.number_field :stock_quantity, min: 0, value: 123, required: true %></td>
+        <td><%= f.submit "商品登録" %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<br>
 <hr>
+<h2>商品一覧</h2>
+
 <% if @products.present? %>
   <table>
     <thead>
@@ -22,7 +45,7 @@
           <td><%= product.price %></td>
           <td><%= product.stock_quantity %></td>
           <td>
-            <%= link_to "削除", admin_dashboard_destroy_path(product.id), method: :delete, data: { confirm: "本当に削除しますか？" } %>
+            <%= link_to "削除", admin_dashboard_destroy_path(product.id), method: :delete, data: { turbo_method: :delete } %>
           </td>
         </tr>
       <% end %>
