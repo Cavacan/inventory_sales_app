@@ -1,0 +1,30 @@
+<h1>注文履歴</h1>
+
+<% if @orders.present? %>
+  <table>
+    <thead>
+      <tr>
+        <th>注文者名</th>
+        <th>注文日</th>
+        <th>合計金額</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @orders.each do |order| %>
+        <tr>
+          <td><%= order.customer_name %></td>
+          <td><%= order.created_at.strftime("%Y/%m/%d %H:%M") %></td>
+          <td><%= order.order_items.sum { |item| item.quantity * item.price } %></td>
+          <td><%= link_to "詳細を見る", order_path(order) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <h2>まだ注文はありません。</h2>
+<% end %>
+
+<nav>
+  <%= link_to "トップページへ戻る", root_path %>
+</nav>

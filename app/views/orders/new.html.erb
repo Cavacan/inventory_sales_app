@@ -1,0 +1,29 @@
+<h1>新規注文</h1>
+
+<%= form_with(model: @order, url: orders_path, method: :post, local: true) do |f| %>
+  <div>
+    <%= f.label :customer_name, "注文者名" %>
+    <%= f.text_field :customer_name, required: true %>
+  </div>
+
+  <h2>注文商品</h2>
+  <% @products.each do |product| %>
+    <div>
+      <%= f.fields_for :order_items, @order.order_items.build(product: product) do |item_form| %>
+        <%= item_form.label :quantity, product.name %>
+        <%= item_form.number_field :quantity, value: 0, min: 0, max: product.stock_quantity %>
+        在庫: <%= product.stock_quantity %> | 単価: <%= product.price %>
+        <%= item_form.hidden_field :product_id, value: product.id %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.submit "注文を確定する" %>
+  </div>
+<% end %>
+<br>
+<nav>
+  <%= link_to "商品一覧に戻る", products_path %> | 
+  <%= link_to "トップページへ戻る", root_path %>
+</nav>

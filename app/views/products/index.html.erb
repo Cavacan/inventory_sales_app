@@ -1,0 +1,26 @@
+<h1>商品一覧</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>商品名</th>
+      <th>価格</th>
+      <th>在庫</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @products.each do |product| %>
+      <tr>
+        <td><%= product.name %></td>
+        <td><%= product.price %></td>
+        <td><%= product.stock_quantity %></td>
+        <td><%= link_to '注文する', new_order_path %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<nav>
+  <%= link_to 'トップページへ戻る', root_path %>
+</nav>
