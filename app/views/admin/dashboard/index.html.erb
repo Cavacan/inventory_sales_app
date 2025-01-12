@@ -1,7 +1,11 @@
 <h1>管理画面</h1>
+
+<% flash.each do |message_type, message| %>
+<div class="flash-message <%= message_type %>"><%= message %></div>
+<% end %>
+
 <hr>
-
-
+<br>
 <h2>商品登録</h2>
 
 <%= form_with model: @product, url: admin_dashboard_create_path, local: true, scope: :product do |f| %>
@@ -45,7 +49,7 @@
           <td><%= product.price %></td>
           <td><%= product.stock_quantity %></td>
           <td>
-            <%= link_to "削除", admin_dashboard_destroy_path(product.id), method: :delete, data: { turbo_method: :delete } %>
+            <%= button_to '削除', admin_dashboard_destroy_path(product.id), method: :delete, form_class: "inline" %>
           </td>
         </tr>
       <% end %>
